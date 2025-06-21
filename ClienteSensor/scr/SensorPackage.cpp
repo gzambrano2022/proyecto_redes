@@ -45,4 +45,5 @@ class SensorPackage{
         bool is_encrypted() const {
             return isEncrypted;
         }
+        
 };
