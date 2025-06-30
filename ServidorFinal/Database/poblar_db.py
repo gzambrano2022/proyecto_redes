@@ -54,7 +54,18 @@ def generar_datos_ejemplo():
                 round(random.uniform(*pres_range), 2),
                 round(random.uniform(*hum_range), 2)
             ))
-    
+
+    # Datos fuera de rango
+    anomalos = [
+        # sensor_id, timestamp, temp, pres, hum
+        (1, datetime.now().isoformat(), 150.0, 800.0, 10.0),  # temperatura y presion muy alta/baja
+        (2, (datetime.now() - timedelta(minutes=10)).isoformat(), 5.0, 1200.0, 90.0),  # valores extremos
+        (3, (datetime.now() - timedelta(minutes=5)).isoformat(), -10.0, 1000.0, 5.0)
+        # temperatura negativa (fuera de rango)
+    ]
+
+    datos.extend(anomalos)
+
     return datos
 
 def poblar_db():
