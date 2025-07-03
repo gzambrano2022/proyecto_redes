@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Compilar Sensor",
+      "type": "shell",
+      "command": "C:\\msys64\\mingw64\\bin\\g++.exe",
+      "args": [
+        "SensorClient.cpp",
+        "SensorPackage.cpp",
+        "-I../headers",
+        "-std=c++17",
+        "-lws2_32",          // <- Necesario para Winsock
+        "-o",
+        "sensor.exe"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+}

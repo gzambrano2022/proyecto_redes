@@ -4,7 +4,9 @@
 #include <cstdint>
 #include <chrono>
 #include <ctime>
+#include <vector>
 
+//#pragma pack(push,1) // Eliminar padding
 struct SensorData {
     int16_t sensor_id;          // ID único del sensor
     std::time_t timestamp;      // Timestamp de la lectura de datos
@@ -27,6 +29,9 @@ public:
 
 
     bool is_encrypted() const;
+
+    std::vector<uint8_t> serialize() const; // Serializa (binariza) SensorData.
+    std::vector<uint8_t> encrypt(const std::vector<uint8_t>& input) const; // Encripta lo binario
 };
 
 #endif // SENSORPACKAGE_H
