@@ -6,7 +6,7 @@
 #include <ctime>
 #include <vector>
 
-//#pragma pack(push,1) // Eliminar padding
+#pragma pack(push,1) // Eliminar padding
 struct SensorData {
     int16_t sensor_id;          // ID único del sensor
     std::time_t timestamp;      // Timestamp de la lectura de datos
@@ -14,6 +14,7 @@ struct SensorData {
     float humidity;             // Lectura de humedad en porcentaje
     float pressure;             // Lectura de presión atmosférica en hPa
 };
+#pragma pack(pop)
 
 class SensorPackage {
 private:

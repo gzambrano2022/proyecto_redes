@@ -39,7 +39,11 @@ def run_intermediate_server():
 
       print(f"[INFO] Datos recibidos:")
       print(f" Sensor ID: {sensor_id}")
-      print(f" Timestamp: {time.ctime(timestamp)}")
+      if timestamp > 0 and timestamp < 2**31:
+        print(f" Timestamp: {time.ctime(timestamp)}")
+      else:
+        print(f" Timestamp inválido: {timestamp}")
+
       print(f" Temperatura: {temp} °C")
       print(f" Humedad: {hum} %")
       print(f" Presión: {press} hPa")
