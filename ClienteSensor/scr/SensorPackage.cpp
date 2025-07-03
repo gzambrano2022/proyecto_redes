@@ -2,6 +2,7 @@
 #include <iostream>
 #include <chrono>
 #include <cstdbool>
+#include <vector>
 
 
 struct SensorData{
@@ -20,6 +21,12 @@ class SensorPackage{
 
 
     public:
+        std::vector<uint8_t> pack(const SensorData& d){
+            std::vector<uint8_t> buffer;
+            buffer.reserve(2+8+3*4);
+
+            // Pack sensor ID
+        }
         SensorPackage& set_id_sensor(int16_t id){
             data.sensor_id = id;
             return *this;
@@ -45,5 +52,6 @@ class SensorPackage{
         bool is_encrypted() const {
             return isEncrypted;
         }
+
         
 };
