@@ -1,13 +1,10 @@
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
-#include <winsock2.h>
-#pragma comment(lib, "ws2_32.lib")  // Enlaza con la biblioteca de sockets
-
 #include <iostream>
 #include <vector>
 #include <chrono>
 #include <thread>
 #include <cstdint>
 #include <cstring>
+#include <boost/asio.hpp>
 #include "SensorPackage.h"
 
 std::vector<uint8_t> encrypt(const std::vector<uint8_t>& input) {
