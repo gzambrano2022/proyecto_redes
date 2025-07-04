@@ -1,3 +1,5 @@
+#include "SensorPackage.h"
+#include <cstring> // Para std::memcpy
 #include <cstdint>
 #include <iostream>
 #include <chrono>
