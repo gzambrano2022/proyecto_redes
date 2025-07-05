@@ -46,10 +46,10 @@ class SensorPackage{
         // Funtion to pack the SensorData into a byte vector
         std::vector<uint8_t> pack(const SensorData& dt){
             std::vector<uint8_t> buffer;
-            buffer.reserve(2+8+34);
+            buffer.reserve(2+8+3*4);
 
             {
-                uint16_t id = native_to_big(dt.sensor_id);
+                uint16_t id = native_to_big(static_cast<uint16_t>(dt.sensor_id));
                 auto id_bytes = reinterpret_cast<uint8_t*>(&id);
                 buffer.insert(buffer.end(), id_bytes, id_bytes + sizeof(id));
             }
@@ -62,11 +62,11 @@ class SensorPackage{
             pack_float(buffer, dt.temperature);
             pack_float(buffer, dt.humidity);
             pack_float(buffer, dt.pressure);
-            return buffer;
-            
 
-            
+
+            return buffer;
         }
+
         SensorPackage& set_id_sensor(int16_t id){
             data.sensor_id = id;
             return *this;
