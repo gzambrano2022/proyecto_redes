@@ -43,7 +43,7 @@ class SensorPackage{
 
         }
 
-        // Funtion to pack the SensorData into a byte vector
+        
         std::vector<uint8_t> pack(const SensorData& dt){
             std::vector<uint8_t> buffer;
             buffer.reserve(2+8+3*4);
@@ -54,7 +54,7 @@ class SensorPackage{
                 buffer.insert(buffer.end(), id_bytes, id_bytes + sizeof(id));
             }
             {
-                uint64_t t = uint16_t(dt.timestamp);
+                uint64_t t = static_cast<uint64_t>(dt.timestamp);
                 uint64_t t_big = native_to_big(t);
                 auto t_bytes = reinterpret_cast<uint8_t*>(&t_big);
                 buffer.insert(buffer.end(), t_bytes, t_bytes + sizeof(t_big));

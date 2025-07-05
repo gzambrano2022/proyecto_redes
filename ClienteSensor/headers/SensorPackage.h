@@ -22,6 +22,7 @@ private:
     bool isEncrypted = false;   // Estado de encriptación
 
 public:
+
     SensorPackage& set_id_sensor(int16_t id);
     SensorPackage& set_timestamp();
     SensorPackage& set_sensor_data(float temp, float hum, float press);
@@ -31,8 +32,8 @@ public:
 
     bool is_encrypted() const;
 
-    std::vector<uint8_t> serialize() const; // Serializa (binariza) SensorData.
-    std::vector<uint8_t> encrypt(const std::vector<uint8_t>& input) const; // Encripta lo binario
+    std::vector<uint8_t> pack(const SensorData& dt);
+    
 };
 
 #endif // SENSORPACKAGE_H
