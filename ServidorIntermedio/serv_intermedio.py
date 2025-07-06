@@ -71,7 +71,7 @@ def run_intermediate_server():
 
       payload = {
         "sensor_id": int(sensor_id),
-        "timestamp": int(timestamp),
+        "timestamp": time.ctime(timestamp),
         "temperatura": float(temp),
         "humedad": float(hum),
         "presion": float(press)
