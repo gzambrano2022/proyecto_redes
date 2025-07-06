@@ -13,6 +13,7 @@ struct SensorData {
     float temperature;          // Lectura de temperatura en grados Celsius
     float humidity;             // Lectura de humedad en porcentaje
     float pressure;             // Lectura de presión atmosférica en hPa
+    uint32_t crc;               // Firma CRC32 del resto del contenido
 };
 #pragma pack(pop)
 
@@ -21,17 +22,27 @@ private:
     SensorData data;            // Datos del sensor
     bool isEncrypted = false;   // Estado de encriptación
 
+    uint32_t crc32(const uint8_t* data, size_t length);  // Función para calcular CRC32
+
 public:
 
+    // Métodos de configuración
     SensorPackage& set_id_sensor(int16_t id);
     SensorPackage& set_timestamp();
     SensorPackage& set_sensor_data(float temp, float hum, float press);
     SensorPackage& set_encryption(bool encrypted);
+
+    // Acceso a datos
     SensorData get_data() const;
 
 
     bool is_encrypted() const;
 
+    // Utilidades
+    void clear();  
+    void finalize();  
+    void pack_float(std::vector<uint8_t>& bf, float value);  
+    std::vector<uint8_t> serialize();  
     std::vector<uint8_t> pack(const SensorData& dt);
     
 };

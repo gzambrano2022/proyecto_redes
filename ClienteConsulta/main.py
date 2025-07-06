@@ -1,7 +1,7 @@
 import requests
 import time
 
-# URL del servidor
+# URL
 API_URL = "http://localhost:5000/api/sensor-data"
 
 # Rangos aceptables

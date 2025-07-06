@@ -2,15 +2,28 @@ import socket
 import struct 
 import time
 import requests
+import binascii  # Para calcular CRC32
 
-# Estructura binaria del paquete C++ (SensorData)
-# int16_t sensor_id; std::time_t timestamp; float temperature, humidity, pressure
-sensor_struct_format = '<hqfff' # < = little endian, h = int16, q = int64, f = float
+# Estructura binaria del paquete C++ (SensorData + crc)
+# int16_t sensor_id; std::time_t timestamp; float temperature, humidity, pressure; uint32_t crc
+sensor_struct_format = '>hqfffI'  # Cambiar a big endian # I = uint32 para crc
 BUFFER_SIZE = struct.calcsize(sensor_struct_format)
 POST_URL = 'http://localhost:5000/api/sensor-data'
 
 def decrypt(data: bytes) -> bytes:
   return bytes(b ^ 0xAA for b in data)
+
+def verify_crc(data: bytes) -> bool:
+    # Separar datos sin CRC y CRC recibido
+    data_without_crc = data[:-4]
+    received_crc_bytes = data[-4:]
+    received_crc = struct.unpack('>I', received_crc_bytes)[0]
+
+    # Calcular CRC32 con binascii.crc32 (devuelve int)
+    calc_crc = binascii.crc32(data_without_crc) & 0xFFFFFFFF
+
+    print(f"[DEBUG] CRC recibido: {received_crc:#010x}, CRC calculado: {calc_crc:#010x}")
+    return calc_crc == received_crc
 
 def deserialize_sensor_data(binary_data: bytes):
   return struct.unpack(sensor_struct_format, binary_data)
@@ -35,11 +48,17 @@ def run_intermediate_server():
       # 2. Desencriptar y decodificar
       
       decrypted_data = decrypt(encrypted_data)
-      sensor_id, timestamp, temp, hum, press = deserialize_sensor_data(decrypted_data)
+
+      # Validar CRC
+      if not verify_crc(decrypted_data):
+        print("[ERROR] Firma CRC32 inválida. Paquete descartado.")
+        return
+
+      sensor_id, timestamp, temp, hum, press, crc = deserialize_sensor_data(decrypted_data)
 
       print(f"[INFO] Datos recibidos:")
       print(f" Sensor ID: {sensor_id}")
-      if timestamp > 0 and timestamp < 2**31:
+      if 0 < timestamp < 2**31:
         print(f" Timestamp: {time.ctime(timestamp)}")
       else:
         print(f" Timestamp inválido: {timestamp}")

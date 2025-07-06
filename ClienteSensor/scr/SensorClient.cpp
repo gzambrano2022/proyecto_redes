@@ -26,9 +26,9 @@ int main() {
 
     // 2. Crear paquete del sensor
     SensorPackage package;
-    package.set_id_sensor(4)
+    package.set_id_sensor(9)
            .set_timestamp()
-           .set_sensor_data(80.5f, 60.0f, 1012.0f)
+           .set_sensor_data(800.5f, 1000.0f, 8.0f)
            .set_encryption(true);
 
     // 3. Serializar y encriptar
