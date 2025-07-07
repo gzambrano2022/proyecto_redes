@@ -26,7 +26,7 @@ int main() {
 
     // 2. Crear paquete del sensor
     SensorPackage package;
-    package.set_id_sensor(9)
+    package.set_id_sensor(13)
            .set_timestamp()
            .set_sensor_data(800.5f, 1000.0f, 8.0f)
            .set_encryption(true);
@@ -34,6 +34,9 @@ int main() {
     // 3. Serializar y encriptar
     std::vector<uint8_t> raw = package.serialize();
     std::vector<uint8_t> encrypted = encrypt(raw);
+    
+    //Corrupcion forzada
+    //encrypted[10] ^= 0xFF;  // Cambia el byte 10 arbitrariamente
 
     // 4. Crear socket TCP
     SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
