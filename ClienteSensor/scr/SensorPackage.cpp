@@ -96,33 +96,6 @@ std::vector<uint8_t> SensorPackage::serialize() {
     return buffer;
 }
 
-// Funcion para empaquetar datos 
-std::vector<uint8_t> SensorPackage::pack(const SensorData& dt) {
-    std::vector<uint8_t> buffer;
-    buffer.reserve(2+8+3*4+4);
-
-    {
-        uint16_t id = native_to_big(static_cast<uint16_t>(dt.sensor_id));
-        auto id_bytes = reinterpret_cast<uint8_t*>(&id);
-        buffer.insert(buffer.end(), id_bytes, id_bytes + sizeof(id));
-    }
-    {
-        uint64_t t = static_cast<uint64_t>(dt.timestamp);
-        uint64_t t_big = native_to_big(t);
-        auto t_bytes = reinterpret_cast<uint8_t*>(&t_big);
-        buffer.insert(buffer.end(), t_bytes, t_bytes + sizeof(t_big));
-    }
-    pack_float(buffer, dt.temperature);
-    pack_float(buffer, dt.humidity);
-    pack_float(buffer, dt.pressure);
-
-    uint32_t crc_be = native_to_big(dt.crc);
-    auto crc_bytes = reinterpret_cast<uint8_t*>(&crc_be);
-    buffer.insert(buffer.end(), crc_bytes, crc_bytes + sizeof(crc_be));
-
-    return buffer;
-}
-
 // Setter del id del sensor
 SensorPackage& SensorPackage::set_id_sensor(int16_t id) {
     data.sensor_id = id;
