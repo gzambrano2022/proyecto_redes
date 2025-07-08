@@ -18,6 +18,8 @@ En cada directorio se encontrarán los módulos mencionados anteriormente, a con
 
 Por otro lado, es ESENCIAL que usted descargue en su computadora la libreria Boost_Asio, que facilita la programación de entrada y salidad asíncrona. 
 
+Finalmente, el sensor solo se puede compilar en WINDOWS. 
+
 
 ### 1. Compilar Cliente Servidor
 
